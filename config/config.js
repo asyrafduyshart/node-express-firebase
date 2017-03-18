@@ -3,6 +3,7 @@ import Joi from 'joi';
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 require('dotenv').config();
 
+
 // define validation for all the env vars
 const envVarsSchema = Joi.object({
   NODE_ENV: Joi.string()
@@ -10,6 +11,8 @@ const envVarsSchema = Joi.object({
     .default('development'),
   PORT: Joi.number()
     .default(4040),
+  FIREBASE_URL: Joi.string().required()
+  .description('Firebase Url'),
   MONGOOSE_DEBUG: Joi.boolean()
     .when('NODE_ENV', {
       is: Joi.string().equal('development'),
@@ -37,6 +40,7 @@ const config = {
   port: envVars.PORT,
   mongooseDebug: envVars.MONGOOSE_DEBUG,
   jwtSecret: envVars.JWT_SECRET,
+  firebaseUrl: envVars.FIREBASE_URL,
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT,

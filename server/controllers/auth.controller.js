@@ -6,9 +6,12 @@ import config from '../../config/config';
 
 const serviceAccount = require('../../firebaseServiceAccount.json');
 
+// rename this into any debugging string you wish to run on terminal
+const debug = require('debug')('node-express-firebase:index');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://persona-973.firebaseio.com'
+  databaseURL: config.firebaseUrl
 });
 
 // // sample user, used for authentication
@@ -33,7 +36,7 @@ function login(req, res, next) {
 // The Firebase ID token needs to be passed as a Bearer token:
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
-  console.log('Check if request is authorized with Firebase ID token');
+  debug('Check if request is authorized with Firebase ID token');
 
   const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
 
@@ -50,7 +53,7 @@ function login(req, res, next) {
 
   const idToken = req.body.token;
   admin.auth().verifyIdToken(idToken).then((decodedIdToken) => {
-    console.log('ID Token correctly decoded', decodedIdToken);
+    debug('ID Token correctly decoded', decodedIdToken);
     next();
     const token = jwt.sign({
       uid: decodedIdToken.uid,
@@ -65,7 +68,7 @@ function login(req, res, next) {
 
     });
   }).catch((error) => {
-    console.error('Error while verifying Firebase ID token:', error);
+    debug('Error while verifying Firebase ID token:', error);
     return next(err);
   });
   return (err);
