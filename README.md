@@ -31,15 +31,19 @@ Features
 ----------
 Installation
 -------------------
-####Creating Firebase Account
+#### Creating Firebase Account
+
 After you clone or fork this, you must create Firebase account [here](https://firebase.google.com/) then create new project [firebase docs](https://firebase.google.com/docs/) and generate Firebase Admin [Secret Key](https://firebase.google.com/docs/admin/setup) and download or save your on project folder.
 > **NOTE:** Paste and rename your .json file for firstime use to *firebaseServiceAccount.json*
 
-####Create MongoDB Database
+#### Create MongoDB Database
+
 There is plenty of ways for creating mongodb database, but for development purpose i recomend using **FREE**  databases from [mLab.com](mLab.com). After you sign-up and create new databases watch for your database url, port and name. You will get database url prettymuch like this:
 *You can insert in your .env folder*
 > **DATABASE URL:** mongodb://USERNAME:PASSWORD@somelink.mlab.com:PORT/DATABASE_NAME
-####Setting Up Environtment
+
+#### Setting Up Environtment
+
 Clone the repo:
 ```sh
 git clone git@github.com/asyrafduyshart/node-express-firebase.git
