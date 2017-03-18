@@ -1,4 +1,4 @@
-#(NEF) Node-Express-Firebase REST APIs implementation made easy
+# NEF Node-Express-Firebase REST APIs implementation made easy
 
 This is a simple boilerplate implementation of making REST APIs in **Node.js** using **ES6 (ECMA Script 2015)** and **Express**  with implementation of **Firebase** Admin for Authentication implemented with **JWT** (JSON Web Token) for more fast and secure communication. Using [Airbnb's Javascript style guide](https://github.com/airbnb/javascript).
 
