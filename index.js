@@ -5,7 +5,8 @@ import util from 'util';
 import config from './config/config';
 import app from './config/express';
 
-const debug = require('debug')('express-firebase:index');
+// rename this into any debugging string you wish to run on terminal
+const debug = require('debug')('node-express-firebase:index');
 
 // make bluebird default Promise
 Promise = require('bluebird'); // eslint-disable-line no-global-assign
