@@ -41,6 +41,9 @@ build/Release
 # Dependency directory
 node_modules
 
+# Server Deploy Directory
+asyraf@52.187.187.241
+
 # Optional npm cache directory
 .npm
 
