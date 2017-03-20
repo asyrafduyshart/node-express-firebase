@@ -18,6 +18,17 @@ router.route('/')
   /** POST /api/timeline - Create new timeline */
   .post(validateJwt, validate(paramValidation.createTimeline), timelineCtrl.create);
 
+router.route('/nearby')
+  /** GET /api/timeline/nearby - Get nearby from user location of timeline */
+  // .get(timelineCtrl.listNearby)
+ .get(validateJwt, validate(paramValidation.neabyRequest), timelineCtrl.listNearby);
+
+router.route('/sort')
+
+  /** GET /api/timeline query categoryType - Get sorting timeline list of specific category */
+  // .get(timelineCtrl.categoryList)
+  .get(validateJwt, timelineCtrl.categoryList);
+
 router.route('/:timelineId')
   /** GET /api/timeline/:timelineId - Get timeline */
   .get(timelineCtrl.get)
@@ -30,10 +41,16 @@ router.route('/:timelineId')
 
 /** PUT /api/timeline/:timelineId/comment - Add comment timeline */
 router.route('/:timelineId/comment')
-  .put(validateJwt, validate(paramValidation.addComment), timelineCtrl.createComment);
+  .put(validateJwt, validate(paramValidation.addComment), timelineCtrl.updateComment);
+
+router.route('/:timelineId/like')
+    /** PUT /api/timeline/:timelineId - Update timeline */
+  .put(validateJwt, timelineCtrl.addLikes);
 
 router.route('/:timelineId/comment')
   .get(timelineCtrl.commentList);
+
+
 
 /** Load timeline when API with timelineId route parameter is hit */
 router.param('timelineId', timelineCtrl.load);

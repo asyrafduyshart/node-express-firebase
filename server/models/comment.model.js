@@ -11,11 +11,11 @@ const CommentSchema = new mongoose.Schema({
     type: Object,
     required: true
   },
-  text: {
+  avatar: {
     type: String,
-    required: true
+    default: 'common_avatar'
   },
-  author: {
+  text: {
     type: String,
     required: true
   },

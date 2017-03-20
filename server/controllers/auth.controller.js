@@ -14,12 +14,6 @@ admin.initializeApp({
   databaseURL: config.firebaseUrl
 });
 
-// // sample user, used for authentication
-// const user = {
-//   username: 'react',
-//   password: 'express'
-// };
-
 /**
  * Returns jwt token if valid username and password is provided
  * @param req
@@ -47,7 +41,7 @@ function login(req, res, next) {
  * @returns {err}
  */
   if (!req.body.token) {
-    console.error('Token is not requested');
+    debug('Token is not requested');
     return next(err);
   }
 
@@ -56,15 +50,14 @@ function login(req, res, next) {
     debug('ID Token correctly decoded', decodedIdToken);
     next();
     const token = jwt.sign({
-      uid: decodedIdToken.uid,
-      email: decodedIdToken.email
+      uid: decodedIdToken.uid
     }, config.jwtSecret);
     /**
      * If Success then will return jwt token with uid and email
      */
     return res.json({
 
-      token, //This is a token that sign from the server
+      token, // This is a token that sign from the server
 
     });
   }).catch((error) => {

@@ -4,6 +4,8 @@ export default {
   // POST /api/users
   createUser: {
     body: {
+      country: Joi.number().required(),
+      city: Joi.string().required(),
       username: Joi.string().required(),
       mobileNumber: Joi.string().regex(/^[1-9][0-9]{9}$/).required()
     }
@@ -20,16 +22,24 @@ export default {
     }
   },
 
+    // GET /api/timelies/nearby
+  neabyRequest: {
+    query: {
+      location: Joi.string().required()
+    }
+  },
+
   // POST /api/users
   createTimeline: {
     user: {
       uid: Joi.string().required()
     },
     body: {
-      title: Joi.string().required(),
-      slug: Joi.string().required(),
+      country: Joi.number().required(),
+      city: Joi.string().required(),
+      location: Joi.object().required(),
       content: Joi.string().required(),
-      author: Joi.string().required()
+      username: Joi.string().required()
     }
   },
 
@@ -52,8 +62,7 @@ export default {
       uid: Joi.string().required()
     },
     body: {
-      text: Joi.string().required(),
-      author: Joi.string().required()
+      text: Joi.string().required()
     },
     params: {
       timelineId: Joi.string().hex().required()

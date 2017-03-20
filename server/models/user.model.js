@@ -7,6 +7,14 @@ import APIError from '../helpers/APIError';
  * User Schema
  */
 const UserSchema = new mongoose.Schema({
+  country: {
+    type: Number,
+    required: true
+  },
+  city: {
+    type: String,
+    required: true
+  },
   user: {
     type: Object,
     required: true
@@ -18,13 +26,18 @@ const UserSchema = new mongoose.Schema({
   mobileNumber: {
     type: String,
     required: true,
-    match: [/^[1-9][0-9]{9}$/, 'The value of path {PATH} ({VALUE}) is not a valid mobile number.']
+    match: [/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/, 'The value of path {PATH} ({VALUE}) is not a valid mobile number.']
   },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
+
+/**
+ * Add apropriate index for fast query
+ */
+UserSchema.index({ country: 1, city: 1 });
 
 /**
  * Add your
