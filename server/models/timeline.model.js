@@ -150,7 +150,7 @@ TimelineSchema.statics = {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .lean()
+      .lean() // Convert to javascript object to make it faster
       .exec();
   },
 

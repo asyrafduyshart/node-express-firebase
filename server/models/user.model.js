@@ -23,11 +23,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  mobileNumber: {
-    type: String,
-    required: true,
-    match: [/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/, 'The value of path {PATH} ({VALUE}) is not a valid mobile number.']
-  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -85,7 +80,17 @@ UserSchema.statics = {
       .skip(skip)
       .limit(limit)
       .exec();
+  },
+
+  checkUser(uuid) {
+    return this.find({ user: uuid }, (err, docs) => {
+      if (!docs.length) {
+        return true;
+      }
+      return new APIError('No such user exists!', httpStatus.NOT_FOUND);
+    });
   }
+
 };
 
 /**

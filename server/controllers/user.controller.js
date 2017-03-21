@@ -1,4 +1,11 @@
+import httpStatus from 'http-status';
+import APIError from '../helpers/APIError';
 import User from '../models/user.model';
+
+// rename this into any debugging string you wish to run on terminal
+const debug = require('debug')('node-express-firebase:index');
+const error = new APIError('No such timeline exists!', httpStatus.NOT_FOUND);
+
 
 /**
  * Load user and append to req.
@@ -22,19 +29,36 @@ function get(req, res) {
 
 /**
  * Create new user
- * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
+ * Check if user exist or not
+ * if doesn't exist just create new One
+ * if Exist just show it
+ * @property {string} req.body.user - The user firebase data from jwt of user.
+ * @property {string} req.body.country - The country of user.
+ * @property {string} req.body.city - The username of user.
+ * @property {string} req.body.username - The country of user.
+ * if User exist
  * @returns {User}
  */
 function create(req, res, next) {
-  const user = new User({
-    username: req.body.username,
-    mobileNumber: req.body.mobileNumber
-  });
-
-  user.save()
+  const exist = User.checkUser(req.user);
+  if (!exist) {
+    debug(`User not exist, create new user ${req.user}`);
+    const newuser = new User({
+      user: req.user,
+      country: req.body.country,
+      city: req.body.city,
+      username: req.body.username
+    });
+    newuser.save()
     .then(savedUser => res.json(savedUser))
     .catch(e => next(e));
+  } else {
+    User.findOne({ user: req.user, }, (err, user) => {
+      if (err) error();
+      debug(`User exist, just show it ${req.user}`);
+      res.json(user);
+    });
+  }
 }
 
 /**
@@ -44,11 +68,9 @@ function create(req, res, next) {
  * @returns {User}
  */
 function update(req, res, next) {
-  const user = req.user;
-  user.username = req.body.username;
-  user.mobileNumber = req.body.mobileNumber;
-
-  user.save()
+  const updateUser = req.user;
+  updateUser.username = req.body.username;
+  updateUser.save()
     .then(savedUser => res.json(savedUser))
     .catch(e => next(e));
 }

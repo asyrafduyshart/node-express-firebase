@@ -31,13 +31,13 @@ router.route('/sort')
 
 router.route('/:timelineId')
   /** GET /api/timeline/:timelineId - Get timeline */
-  .get(timelineCtrl.get)
+  .get(validateJwt, timelineCtrl.get)
 
   /** PUT /api/timeline/:timelineId - Update timeline */
-  .put(validate(paramValidation.updateTimeline), timelineCtrl.update)
+  .put(validateJwt, validate(paramValidation.updateTimeline), timelineCtrl.update)
 
   /** DELETE /api/timeline/:timelineId - Delete timeline */
-  .delete(timelineCtrl.remove);
+  .delete(validateJwt, timelineCtrl.remove);
 
 /** PUT /api/timeline/:timelineId/comment - Add comment timeline */
 router.route('/:timelineId/comment')
@@ -48,8 +48,7 @@ router.route('/:timelineId/like')
   .put(validateJwt, timelineCtrl.addLikes);
 
 router.route('/:timelineId/comment')
-  .get(timelineCtrl.commentList);
-
+  .get(validateJwt, timelineCtrl.commentList);
 
 
 /** Load timeline when API with timelineId route parameter is hit */

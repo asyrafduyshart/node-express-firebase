@@ -48,21 +48,18 @@ function login(req, res, next) {
   const idToken = req.body.token;
   admin.auth().verifyIdToken(idToken).then((decodedIdToken) => {
     debug('ID Token correctly decoded', decodedIdToken);
-    next();
     const token = jwt.sign({
       uid: decodedIdToken.uid
     }, config.jwtSecret);
     /**
      * If Success then will return jwt token with uid and email
      */
-    return res.json({
-
-      token, // This is a token that sign from the server
-
-    });
+    // next();
+    return res.json({ token });
+     // This is a token that sign from the serve
   }).catch((error) => {
     debug('Error while verifying Firebase ID token:', error);
-    return next(err);
+    return (err);
   });
   return (err);
 }
