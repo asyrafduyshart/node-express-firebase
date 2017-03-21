@@ -16,9 +16,11 @@ mongoose.Promise = Promise;
 
 // connect to mongo db
 const mongoUri = `${config.mongo.host}:${config.mongo.port}/${config.mongo.name}?ssl=true`;
-mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1 } } });
+mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1 },
+  reconnectTries: Number.MAX_VALUE } });
+
 mongoose.connection.on('error', () => {
-  throw new Error(`unable to connect to database: ${config.db}`);
+  debug(`unable to connect to database at ${Date.now}  in  ${config.db}`);
 });
 
 // print mongoose logs in dev env
