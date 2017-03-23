@@ -2,6 +2,8 @@ import express from 'express';
 import userRoutes from './user.route';
 import authRoutes from './auth.route';
 import timelineRoutes from './timeline.route';
+import graphqlRoutes from './graphql.route';
+
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -18,5 +20,8 @@ router.use('/auth', authRoutes);
 
 // mount timeline routes at /timeline
 router.use('/timelines', timelineRoutes);
+
+// mount graphql schema for development
+router.use(graphqlRoutes);
 
 export default router;

@@ -3,7 +3,7 @@ import APIError from '../helpers/APIError';
 import User from '../models/user.model';
 
 // rename this into any debugging string you wish to run on terminal
-const debug = require('debug')('node-express-firebase:index');
+const debug = require('debug')('node-express-firebase:index'); // eslint-disable-line
 const error = new APIError('No such timeline exists!', httpStatus.NOT_FOUND);
 
 
