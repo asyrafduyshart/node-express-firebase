@@ -59,7 +59,7 @@ function login(req, res, next) {
      // This is a token that sign from the serve
   }).catch((error) => {
     debug('Error while verifying Firebase ID token:', error);
-    return (err);
+    return next(err);
   });
   return (err);
 }

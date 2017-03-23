@@ -1,7 +1,5 @@
 import Timeline from '../models/timeline.model';
 import Comment from '../models/comment.model';
-// rename this into any debugging string you wish to run on terminal
-const debug = require('debug')('node-express-firebase:index');
 
 /**
  * Load timeline and append to req.
@@ -95,7 +93,7 @@ function list(req, res, next) {
  */
 function listNearby(req, res, next) {
   const { limit = 50, skip = 0 } = req.query;
-  Timeline.nearby({ limit, skip }, req.query.location, req.query.distance)
+  Timeline.nearby({ limit, skip }, req.query)
     .then(timeline => res.send(timeline))
     .catch(e => next(e));
 }

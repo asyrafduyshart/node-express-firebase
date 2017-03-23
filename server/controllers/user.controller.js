@@ -40,25 +40,34 @@ function get(req, res) {
  * @returns {User}
  */
 function create(req, res, next) {
-  const exist = User.checkUser(req.user);
-  if (!exist) {
-    debug(`User not exist, create new user ${req.user}`);
-    const newuser = new User({
-      user: req.user,
-      country: req.body.country,
-      city: req.body.city,
-      username: req.body.username
-    });
-    newuser.save()
+  // const exist = User.checkUser(req.user);
+  User.count({ user: req.user }, (err, count) => {
+    if (err) {
+      return new APIError('No such user exists!', httpStatus.NOT_FOUND);
+    }
+
+    debug(`Result is  ${count}`);
+    if (count > 0) {
+        // document exists });
+      User.findOne({ user: req.user, }, (er, user) => {
+        if (er) error();
+        debug(`User exist, just show it ${user}`);
+        res.json(user);
+      });
+    } else {
+      debug(`User not exist, create new user ${req.user}`);
+      const newuser = new User({
+        user: req.user,
+        country: req.body.country,
+        city: req.body.city,
+        username: req.body.username
+      });
+      newuser.save()
     .then(savedUser => res.json(savedUser))
     .catch(e => next(e));
-  } else {
-    User.findOne({ user: req.user, }, (err, user) => {
-      if (err) error();
-      debug(`User exist, just show it ${req.user}`);
-      res.json(user);
-    });
-  }
+    }
+    return new APIError('No such user exists!', httpStatus.NOT_FOUND);
+  });
 }
 
 /**

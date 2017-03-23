@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 
+// rename this into any debugging string you wish to run on terminal
+const debug = require('debug')('node-express-firebase:index');
+
 /**
  * User Schema
  */
@@ -82,10 +85,12 @@ UserSchema.statics = {
       .exec();
   },
 
-  checkUser(uuid) {
-    return this.find({ user: uuid }, (err, docs) => {
-      if (!docs.length) {
+  checkUser(uid) {
+    return this.count({ user: uid }, (err, count) => {
+      debug(`Result is  ${count}`);
+      if (count > 0) {
         return true;
+        // document exists });
       }
       return new APIError('No such user exists!', httpStatus.NOT_FOUND);
     });

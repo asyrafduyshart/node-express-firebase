@@ -78,8 +78,6 @@ TimelineSchema.index({ location: '2dsphere', country: 1, city: 1 });
  */
 const JSONReturn = 'user.uid username avatar content category tags createdAt commentCount likesCount';
 
-
-
 /**
  * Add your
  * - pre-save hooks
@@ -135,17 +133,22 @@ TimelineSchema.statics = {
    * @param {number} limit - Limit number of timeline to be returned.
    * @returns {Promise<User[]>}
    */
-  nearby({ skip = 0, limit = 50 } = {}, location, distance) {
+  nearby({ skip = 0, limit = 50 } = {}, query) {
+    debug(`The Query is ${JSON.stringify(query)}`);
+    const location = query.location;
+    const distance = query.distance;
+    const reqCountry = query.country;
+    const reqCity = query.city;
     const longlat = location.split(',');
     return this.find({
       location:
       { $near: {
         $geometry: { type: 'Point', coordinates: [longlat[0], longlat[1]] },
-        $minDistance: 100,
+        $minDistance: 10,
         $maxDistance: distance || 20000 }
       },
-      country: 62,
-      city: 'JKT'
+      country: reqCountry,
+      city: reqCity
     }, JSONReturn)
       .sort({ createdAt: -1 })
       .skip(skip)

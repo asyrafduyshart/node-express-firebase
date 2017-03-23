@@ -2,8 +2,6 @@ import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import { getSchema } from '@risingstack/graffiti-mongoose';
 
-import config from '../../config/config';
-
 
 // Import Schema from Mongo for Converter
 import userSchema from '../models/user.model';
@@ -23,7 +21,7 @@ const schema = getSchema([userSchema, timelineSchema, commentSchema], options);
 
 router.use('/graphql', graphqlHTTP({
   schema,
-  graphiql: config.env !== 'development'
+  graphiql: true
 }));
 
 export default router;
