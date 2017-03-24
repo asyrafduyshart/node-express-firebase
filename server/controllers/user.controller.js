@@ -41,7 +41,7 @@ function get(req, res) {
  */
 function create(req, res, next) {
   // const exist = User.checkUser(req.user);
-  User.count({ user: req.user }, (err, count) => {
+  User.count({ 'user.uid': req.user.uid }, (err, count) => {
     if (err) {
       return new APIError('No such user exists!', httpStatus.NOT_FOUND);
     }
@@ -49,7 +49,7 @@ function create(req, res, next) {
     debug(`Result is  ${count}`);
     if (count > 0) {
         // document exists });
-      User.findOne({ user: req.user, }, (er, user) => {
+      User.findOne({ 'user.uid': req.user.uid, }, (er, user) => {
         if (er) error();
         debug(`User exist, just show it ${user}`);
         res.json(user);
@@ -60,7 +60,9 @@ function create(req, res, next) {
         user: req.user,
         country: req.body.country,
         city: req.body.city,
-        username: req.body.username
+        username: req.body.username,
+        emojivatar: req.body.emojivatar,
+        url_pic: req.body.url_pic
       });
       newuser.save()
     .then(savedUser => res.json(savedUser))

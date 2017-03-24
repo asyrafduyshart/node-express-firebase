@@ -3,9 +3,6 @@ import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 
-// rename this into any debugging string you wish to run on terminal
-const debug = require('debug')('node-express-firebase:index');
-
 /**
  * User Schema
  */
@@ -24,7 +21,15 @@ const UserSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required: true
+  },
+  email: {
+    type: String
+  },
+  emojivatar: {
+    type: String
+  },
+  url_pic: {
+    type: String
   },
   createdAt: {
     type: Date,
@@ -84,17 +89,6 @@ UserSchema.statics = {
       .limit(limit)
       .exec();
   },
-
-  checkUser(uid) {
-    return this.count({ user: uid }, (err, count) => {
-      debug(`Result is  ${count}`);
-      if (count > 0) {
-        return true;
-        // document exists });
-      }
-      return new APIError('No such user exists!', httpStatus.NOT_FOUND);
-    });
-  }
 
 };
 
