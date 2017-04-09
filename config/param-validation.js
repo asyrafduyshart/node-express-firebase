@@ -4,17 +4,17 @@ export default {
   // POST /api/users
   createUser: {
     body: {
-      country: Joi.number().required(),
+      country: Joi.string().required(),
       city: Joi.string().required(),
-      username: Joi.string().required()
+      location: Joi.object().required(),
+      displayName: Joi.string().required()
     }
   },
 
   // UPDATE /api/users/:userId
   updateUser: {
     body: {
-      country: Joi.number().required(),
-      city: Joi.string().required(),
+      country: Joi.string().required(),
       username: Joi.string().required()
     },
     params: {
@@ -35,7 +35,7 @@ export default {
       uid: Joi.string().required()
     },
     body: {
-      country: Joi.number().required(),
+      country: Joi.string().required(),
       city: Joi.string().required(),
       location: Joi.object().required(),
       content: Joi.string().required(),

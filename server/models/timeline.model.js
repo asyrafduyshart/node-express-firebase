@@ -11,7 +11,7 @@ const debug = require('debug')('node-express-firebase:index');
  */
 const TimelineSchema = new mongoose.Schema({
   country: {
-    type: Number,
+    type: String,
     required: true
   },
   city: {
@@ -58,11 +58,18 @@ const TimelineSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  reportsCount: {
+    type: Number,
+    default: 0
+  },
   comment: [{
     type: mongoose.Schema.Types.Object,
     ref: 'Comment'
   }],
   likes: [{
+    type: String
+  }],
+  reporters: [{
     type: String
   }],
 });
@@ -76,7 +83,7 @@ TimelineSchema.index({ location: '2dsphere', country: 1, city: 1 });
 /**
  * Specify list of necessary value wanted to be returned to decrease JSON size
  */
-const JSONReturn = 'user.uid username avatar content category tags createdAt commentCount likesCount';
+const JSONReturn = 'user.uid city username avatar content category tags createdAt commentCount likesCount reportsCount';
 
 /**
  * Add your
@@ -101,7 +108,7 @@ TimelineSchema.statics = {
    * @returns {Promise<Timeline, APIError>}
    */
   get(id) {
-    return this.findById(id)
+    return this.findById(id, JSONReturn)
       .exec()
       .then((timeline) => {
         if (timeline) {
@@ -192,6 +199,36 @@ TimelineSchema.statics = {
         {
           $inc: { likesCount: 1 },
           $push: { likes: uuid }
+        })
+      .exec();
+    }
+
+    return this.update({
+      _id: id,
+      likes: { $ne: uuid }
+    },
+      {
+        $inc: { likesCount: -1 },
+        $pull: { likes: uuid }
+      })
+      .exec();
+  },
+
+        /**
+   * Create a report by updating databases and increment it
+   * @param {String} id - Id of data need to add new comment
+   * @param {Object} objects - Name of Object to push
+   * @returns {Promise<Timeline>}
+   */
+  addReports(id, uuid, report) {
+    if (report) {
+      return this.update({
+        _id: id,
+        reporters: { $elemMatch: { $ne: uuid } }
+      },
+        {
+          $inc: { reportsCount: 1 },
+          $push: { reporters: uuid }
         })
       .exec();
     }

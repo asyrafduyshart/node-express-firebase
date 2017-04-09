@@ -47,6 +47,10 @@ router.route('/:timelineId/like')
     /** PUT /api/timeline/:timelineId - Update timeline */
   .put(validateJwt, timelineCtrl.addLikes);
 
+router.route('/:timelineId/report')
+    /** PUT /api/timeline/:timelineId - Update timeline */
+  .put(validateJwt, timelineCtrl.addReports);
+
 router.route('/:timelineId/comment')
   .get(validateJwt, timelineCtrl.commentList);
 

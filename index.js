@@ -15,7 +15,7 @@ Promise = require('bluebird'); // eslint-disable-line no-global-assign
 mongoose.Promise = Promise;
 
 // connect to mongo db
-const mongoUri = `${config.mongo.host}:${config.mongo.port}/${config.mongo.name}?ssl=true`;
+const mongoUri = `${config.mongo.host}:${config.mongo.port}/${config.mongo.name}/?ssl=true`;
 mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1 },
   reconnectTries: Number.MAX_VALUE } });
 
@@ -34,7 +34,7 @@ if (config.MONGOOSE_DEBUG) {
 // src: https://github.com/mochajs/mocha/issues/1912
 if (!module.parent) {
   // listen on port config.port
-  app.listen(config.port, () => {
+  app.listen(config.port, '0.0.0.0', () => {
     debug(`server started on port ${config.port} (${config.env})`);
   });
 }

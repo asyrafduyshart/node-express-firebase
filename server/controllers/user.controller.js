@@ -60,7 +60,12 @@ function create(req, res, next) {
         user: req.user,
         country: req.body.country,
         city: req.body.city,
+        location: req.body.location,
+        address: req.body.address,
+        displayName: req.body.displayName,
         username: req.body.username,
+        email: req.body.email,
+        provider: req.body.provider,
         emojivatar: req.body.emojivatar,
         url_pic: req.body.url_pic
       });
@@ -81,6 +86,7 @@ function create(req, res, next) {
 function update(req, res, next) {
   const updateUser = req.user;
   updateUser.username = req.body.username;
+  updateUser.emojivatar = req.body.emojivatar;
   updateUser.save()
     .then(savedUser => res.json(savedUser))
     .catch(e => next(e));

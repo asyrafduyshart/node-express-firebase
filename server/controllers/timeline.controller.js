@@ -1,6 +1,12 @@
 import Timeline from '../models/timeline.model';
 import Comment from '../models/comment.model';
 
+
+const JSONReturn = 'user';
+
+// rename this into any debugging string you wish to run on terminal
+const debug = require('debug')('node-express-firebase:index');
+
 /**
  * Load timeline and append to req.
  */
@@ -8,6 +14,7 @@ function load(req, res, next, id) {
   Timeline.get(id)
     .then((timeline) => {
       req.timeline = timeline; // eslint-disable-line no-param-reassign
+      debug(`TIMELINE ${timeline}`);
       return next();
     })
     .catch(e => next(e));
@@ -141,12 +148,22 @@ function updateComment(req, res, next) {
 
 /**
  * Add new likes
- * @property {string} req.body.text - The tittle of v.
- * @property {string} req.body.author - The slug of timeline.
+ * @property {string} req.body.uid - The uid of likers.
  * @returns {Timeline}
  */
 function addLikes(req, res, next) {
   Timeline.addLikes(req.timeline, req.user.uid, req.query.like)
+  .then(timeline => res.json(timeline))
+    .catch(e => next(e));
+}
+
+/**
+ * Add new report
+ * @property {string} req.body.uid - The uid of the reporters.
+ * @returns {Timeline}
+ */
+function addReports(req, res, next) {
+  Timeline.addReports(req.timeline, req.user.uid, req.query.report)
   .then(timeline => res.json(timeline))
     .catch(e => next(e));
 }
@@ -171,4 +188,5 @@ export default { load,
   commentList,
   categoryList,
   addLikes,
+  addReports,
   listNearby };

@@ -8,21 +8,33 @@ import APIError from '../helpers/APIError';
  */
 const UserSchema = new mongoose.Schema({
   country: {
-    type: Number,
+    type: String,
     required: true
   },
   city: {
-    type: String,
-    required: true
+    type: String
+  },
+  location: {
+    type: { type: String, default: 'Point', required: true },
+    coordinates: [Number]
   },
   user: {
     type: Object,
     required: true
   },
+  address: {
+    type: String,
+  },
   username: {
     type: String,
   },
+  displayName: {
+    type: String,
+  },
   email: {
+    type: String
+  },
+  provider: {
     type: String
   },
   emojivatar: {
