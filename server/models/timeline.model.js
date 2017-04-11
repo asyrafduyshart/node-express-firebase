@@ -129,8 +129,8 @@ TimelineSchema.statics = {
     return this.find({
     }, JSONReturn)
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
+      .skip(+skip)
+      .limit(+limit)
       .exec();
   },
 
@@ -158,8 +158,8 @@ TimelineSchema.statics = {
       city: reqCity
     }, JSONReturn)
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
+      .skip(+skip)
+      .limit(+limit)
       .lean() // Convert to javascript object to make it faster
       .exec();
   },
@@ -254,8 +254,8 @@ TimelineSchema.statics = {
     debug(`Category is ${categoryType}`);
     return this.find({ category: { $all: categoryType.split(',') } }, JSONReturn)
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
+      .skip(+skip)
+      .limit(+limit)
       .exec();
   },
 };

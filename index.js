@@ -35,7 +35,7 @@ if (config.MONGOOSE_DEBUG) {
 if (!module.parent) {
   // listen on port config.port
   app.listen(config.port, '0.0.0.0', () => {
-    debug(`server started on port ${config.port} (${config.env})`);
+    console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
   });
 }
 
