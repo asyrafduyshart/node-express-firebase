@@ -15,12 +15,12 @@ Promise = require('bluebird'); // eslint-disable-line no-global-assign
 mongoose.Promise = Promise;
 
 // connect to mongo db
-const mongoUri = `${config.mongo.host}:${config.mongo.port}/${config.mongo.name}/?ssl=true`;
+const mongoUri = `${config.mongo.host}:${config.mongo.port}/${config.mongo.name}`;
 mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1 },
   reconnectTries: Number.MAX_VALUE } });
 
 mongoose.connection.on('error', () => {
-  debug(`unable to connect to database at ${Date.now}  in  ${config.db}`);
+  debug(`unable to connect to database at ${Date.now}in ${config.db}`);
 });
 
 // print mongoose logs in dev env
